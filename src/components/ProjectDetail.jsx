@@ -1,5 +1,7 @@
-import React, { useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
+import PlaceholderImage from "./PlaceholderImage";
+//  React, defined but never used.
+import { useEffect } from "react";
 
 const PROJECTS = [
   {
@@ -15,7 +17,7 @@ const PROJECTS = [
   },
   {
     id: 1,
-    title: "Urban Cartography",
+    title: "Architecture Study",
     category: "Architecture & Space",
     year: "2024",
     description:
@@ -74,7 +76,35 @@ const ProjectDetail = () => {
   const { id } = useParams();
   const detail = PROJECTS[parseInt(id)];
 
+  const previous =
+    PROJECTS[(parseInt(id) - 1 + PROJECTS.length) % PROJECTS.length];
   const next = PROJECTS[(parseInt(id) + 1) % PROJECTS.length];
+  const gallery = [
+    {
+      placement: "gallery-feature",
+      src: detail.image,
+      alt: `${detail.title} featured photograph`,
+      label: "Featured image",
+    },
+    {
+      placement: "gallery-detail-top",
+      src: detail.image,
+      alt: `${detail.title} close-up detail`,
+      label: "Detail study",
+    },
+    {
+      placement: "gallery-detail-bottom",
+      src: detail.image,
+      alt: `${detail.title} secondary composition`,
+      label: "Composition",
+    },
+    {
+      placement: "gallery-wide",
+      src: detail.image,
+      alt: `${detail.title} wide project view`,
+      label: "Full view",
+    },
+  ];
 
   useEffect(() => {
     window.scrollTo({
@@ -84,93 +114,89 @@ const ProjectDetail = () => {
   }, [id]);
 
   return (
-    <div className="px-[3vw]">
-      <div className="info h-[40vh] flex flex-col justify-end   w-full ">
-        <div className="information w-[40%] text-balance">
-          <p className="text-[2.2rem] leading-[1.1] font-[530]">
-            {detail.description}
-          </p>
+    <div key={id} className="project-detail">
+      <div className="project-info">
+        <div className="information">
+          <p>{detail.description}</p>
         </div>
-        <div className="moreinfo mt-[2.5vw] flex gap-[15vw] ">
+        <div className="moreinfo">
           <div className="title">
             <div className="head">
-              <h3 className="text-[1.7rem] font-[500]">Title</h3>
+              <h3>Title</h3>
             </div>
             <div className="content">
-              <h3 className="text-[2.2rem] font-[540]">{detail.title}</h3>
+              <h3>{detail.title}</h3>
             </div>
           </div>
           <div className="category">
             <div className="head">
-              <h3 className="text-[1.7rem] font-[500]">Category</h3>
+              <h3>Category</h3>
             </div>
             <div className="content">
-              <h3 className="text-[2.2rem] font-[540]">{detail.category}</h3>
+              <h3>{detail.category}</h3>
             </div>
           </div>
           <div className="tags">
             <div className="head">
-              <h3 className="text-[1.7rem] font-[500]">Tags</h3>
+              <h3>Tags</h3>
             </div>
-            <div className="content mt-[1rem]">
+            <div className="content">
               {detail.tags.map((tag) => {
                 return (
-                  <h3 className="text-[1.9rem] leading-[1] font-[540]">
-                    {tag}
-                  </h3>
+                  <h3 key={tag}>{tag}</h3>
                 );
               })}
             </div>
           </div>
           <div className="year">
             <div className="head">
-              <h3 className="text-[1.7rem] font-[500]">Year</h3>
+              <h3>Year</h3>
             </div>
             <div className="content">
-              <h3 className="text-[2.2rem] font-[540]">{detail.year}</h3>
+              <h3>{detail.year}</h3>
             </div>
           </div>
         </div>
       </div>
-      <div className="mockups my-[2vw]">
-        <div className="firstImage h-screen w-full">
-          <img
-            className="h-full w-full object-cover"
-            src={detail.image}
-            alt=""
-          />
-        </div>
-        <div className="secondImage h-[120vh] w-full flex gap-[1.4rem] mt-[1.5rem] ">
-          <div className="leftImage h-full w-[50%]">
-            <img
-              className="h-full w-full object-cover"
-              src="https://images.unsplash.com/photo-1778426141078-50e2eb21ff2d?q=80&w=774&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-              alt=""
+      <section
+        className="project-gallery"
+        aria-label={`${detail.title} image collage`}
+      >
+        {gallery.map((image, index) => (
+          <figure
+            key={image.placement}
+            className={`gallery-item ${image.placement}`}
+          >
+            <PlaceholderImage
+              src={image.src}
+              alt={image.alt}
+              loading={index === 0 ? "eager" : "lazy"}
             />
-          </div>
-          <div className="rightImage h-full w-[50%]">
-            <img
-              className="h-full w-full object-cover"
-              src="https://images.unsplash.com/photo-1779107940345-a4bf20499215?q=80&w=774&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-              alt=""
-            />
-          </div>
-        </div>
-        <div className="thirdImage h-[140vh] w-full mt-[1.5rem] ">
-          <img
-            className="h-full w-full object-cover"
-            src="https://images.unsplash.com/photo-1779006887917-79a8034ee875?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-            alt=""
-          />
-        </div>
+            <figcaption>
+              <span>0{index + 1}</span>
+              {image.label}
+            </figcaption>
+          </figure>
+        ))}
+      </section>
 
-        <div className="nextProject h-[35vh] w-full flex flex-col items-center justify-center ">
-          <Link to={`/project/${next.id}`}>
-            <h3 className="text-[2.3rem]">Next Project</h3>
-          </Link>
-          <h3 className="text-[2.1rem] text-[#dbdbdb]">{next.title}</h3>
-        </div>
-      </div>
+      <nav className="project-navigation" aria-label="Project navigation">
+        <Link className="project-adjacent project-previous" to={`/project/${previous.id}`}>
+          <span>Previous project</span>
+          <strong>{previous.title}</strong>
+        </Link>
+        <Link
+          className="return-to-circle"
+          to="/"
+          state={{ showCircle: true }}
+        >
+          Return to circle
+        </Link>
+        <Link className="project-adjacent project-next" to={`/project/${next.id}`}>
+          <span>Next project</span>
+          <strong>{next.title}</strong>
+        </Link>
+      </nav>
     </div>
   );
 };

@@ -12,4 +12,8 @@ export default defineConfig({
       include: ["**/*.glsl", "**/*.wgsl", "**/*.vert", "**/*.frag"],
     }),
   ],
+  // Added this server block to tell external Browser to open automatically
+  server: {
+    open: true
+  },
 });

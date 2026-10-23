@@ -1,8 +1,13 @@
-varying vec2 vUv;
+precision mediump float;
+
+in vec2 vUv;
 uniform sampler2D uTexture;
-void main(){
+out vec4 fragmentColor;
 
-    vec4 tex = texture2D(uTexture,vUv);
+void main() {
+    vec4 imageColor = texture(uTexture, vUv);
 
-    gl_FragColor = tex;
+    // Apply a small exposure lift, then encode linear texture samples for display.
+    imageColor.rgb = min(imageColor.rgb * 1.08, vec3(1.0));
+    fragmentColor = linearToOutputTexel(imageColor);
 }

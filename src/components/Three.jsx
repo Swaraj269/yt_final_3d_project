@@ -1,17 +1,12 @@
 import { Canvas } from "@react-three/fiber";
-import React from "react";
 import Experience from "./Experience";
-import { OrbitControls } from "@react-three/drei";
 
-const Three = () => {
-  return (
-    <div className=" fixed pointer-events-none top-0 left-0 z-[60] h-screen w-full">
-      <Canvas>
-        {/* <OrbitControls /> */}
-        <Experience />
-      </Canvas>
-    </div>
-  );
-};
+const Three = () => (
+  <div className="three-canvas">
+    <Canvas camera={{ position: [0, 0, 8], fov: 50 }} dpr={[1, 1.5]}>
+      <Experience />
+    </Canvas>
+  </div>
+);
 
 export default Three;
